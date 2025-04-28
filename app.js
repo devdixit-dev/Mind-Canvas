@@ -23,6 +23,14 @@ app.get('/', (req, res) => {
   res.render('welcome')
 });
 
+app.get('/signup', (req, res) => {
+  res.render('register')
+});
+
+app.get('/login', (req, res) => {
+  res.render('login')
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
