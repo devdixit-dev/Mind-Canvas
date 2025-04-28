@@ -1,15 +1,16 @@
-import { config } from 'dotenv';
+import 'dotenv/config'
 import express from 'express';
 import ConnectToDB from './config/connect.js';
+import userRouter from './routes/userRoute.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
-
-config();
 
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 
+app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use((req, res, next) => {
@@ -18,6 +19,8 @@ app.use((req, res, next) => {
 });
 
 ConnectToDB();
+
+app.use('/user', userRouter);
 
 app.get('/', (req, res) => {
   res.render('welcome')
