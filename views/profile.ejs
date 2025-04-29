@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Outfit", sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <header class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#">
+        <h1 class="text-3xl font-light cursor-pointer tracking-wide text-white">Mind Canvas</h1>
+      </a>
+
+      <nav>
+        <ul class="flex justify-center items-center space-x-6 font-light text-white">
+          <li><a href="/user/dashboard" class="hover:text-gray-400">Dashboard</a></li>
+          <li><a href="/about" class="hover:text-gray-400">About</a></li>
+          <li><a href="/contact" class="hover:text-gray-400">Contact</a></li>
+          <form action="/user/logout" method="post">
+            <button type="submit" class="py-2 px-5 bg-red-500 rounded-md border-2 border-gray-700">Logout</a>
+          </form>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <div class="p-8 flex">
+    <div class="flex justify-center items-center border-r-2 border-gray-700 pr-20">
+      <form action="/user/verify-info" method="post" class="mt-10 flex flex-col gap-6 w-full h-full">
+        <h2 class="text-xl">My Profile</h2>
+        <div>
+          <p class="mb-4">Username</p>
+          <input type="text" placeholder="Update your username" name="username" value="<%= user.username %>"
+            class="px-4 py-3 bg-gray-700 text-white outline-none border-0 rounded-md">
+        </div>
+
+        <div>
+          <p class="mb-4">Email</p>
+          <input type="email" placeholder="Update your email" name="email" value="<%= user.email %>"
+            class="px-4 py-3 bg-gray-700 text-white outline-none border-0 rounded-md">
+        </div>
+
+        <div>
+          <p class="mb-4">Old Password</p>
+          <input type="password" placeholder="Enter your old password" name="oldPassword"
+            class="px-4 py-3 bg-gray-700 text-white outline-none border-0 rounded-md">
+        </div>
+
+        <div>
+          <p class="mb-4">New Password</p>
+          <input type="password" placeholder="Enter your new password" name="newPassword"
+            class="px-4 py-3 bg-gray-700 text-white outline-none border-0 rounded-md">
+        </div>
+
+        <div>
+          <button type="submit" class="mt-4 py-2 px-6 bg-blue-500 rounded-lg">Verify info</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-10">
+      <h2 class="text-2xl">Your Blogs</h2>
+      <div>
+        you have not create any blogs yet
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

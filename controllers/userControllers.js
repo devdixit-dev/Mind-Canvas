@@ -1,4 +1,5 @@
 import transporter from '../config/nodemailer.js';
+import Blog from '../models/Blog.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 
@@ -124,7 +125,7 @@ export const Login = async (req, res) => {
       return res.render('login', { message })
     }
 
-    if(user.isVerified === false) {
+    if (user.isVerified === false) {
       return res.redirect('/register');
     }
 
@@ -145,4 +146,89 @@ export const Login = async (req, res) => {
     })
   }
 
+}
+
+export const Logout = async (req, res) => {
+
+  res.clearCookie('token');
+  res.redirect('/login')
+
+}
+
+export const getDashboard = async (req, res) => {
+  const user = req.user;
+  const blogs = await Blog.find();
+  res.render('dashboard', { user, blogs });
+}
+
+export const getCreateNewBlog = async (req, res) => {
+  const user = req.user
+  res.render('create-new-blog', { user });
+}
+
+export const PostCreateNewBlog = async (req, res) => {
+  const user = req.user
+  const { title, description, content } = req.body;
+
+  try {
+    if (!title || !description || !content) {
+      return res.render('create-new-blog');
+    }
+
+    const blog = await Blog.create({
+      author: user._id,
+      title,
+      description,
+      content
+    });
+
+    blog.save();
+    user.blogsPosted.push(blog._id)
+    user.save();
+
+    return res.redirect('/user/dashboard')
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    })
+  }
+
+}
+
+export const getProfile = async (req, res) => {
+  const user = req.user
+  res.render('profile', {user});
+}
+
+
+export const PostVerifyInfo = async (req, res) => {
+  const user = req.user;
+  const { username, email, oldPassword, newPassword } = req.body;
+
+  const matchPassword = await bcrypt.compare(oldPassword, user.password);
+
+  if(!matchPassword) {
+    return res.redirect('/user/profile');
+  }
+
+  const hashPassword = await bcrypt.hash(newPassword, 10);
+
+  // sending verification email
+  const verifyMail = {
+    from: process.env.SENDER_EMAIL,
+    to: user.email,
+    subject: 'Updating your information',
+    text: `Hello, ${user.email}. You just changed your email to ${email}.`
+  }
+
+  await transporter.sendMail(verifyMail);
+
+  user.username = username,
+  user.email = email,
+  user.password = hashPassword,
+  user.save();
+
+  res.redirect('/user/profile');
 }

@@ -6,7 +6,8 @@ const user_schema = new mongoose.Schema({
   password: { type: String, required: true },
   blogsPosted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'blog' }],
   isVerified: { type: Boolean, default: false },
-  registerOtp: { type: String, default: null }
+  registerOtp: { type: String, default: null },
+  verifyOtp: { type: String, default: null }
 });
 
 const User = mongoose.model('users', user_schema);

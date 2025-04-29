@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Outfit", sans-serif;
+      box-sizing: border-box;
+    }
+  </style>
+
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <header class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#">
+        <h1 class="text-3xl font-light cursor-pointer tracking-wide text-white">Mind Canvas</h1>
+      </a>
+
+      <nav>
+        <ul class="flex justify-center items-center space-x-6 font-light text-white">
+          <li><a href="/user/create-new-blog" class="hover:text-gray-400">Create New Blog</a></li>
+          <li><a href="/about" class="hover:text-gray-400">About</a></li>
+          <li><a href="/contact" class="hover:text-gray-400">Contact</a></li>
+          <li><a href="/user/profile"
+              class="text-xl bg-white w-10 h-10 rounded-md flex text-black justify-center items-center">
+              <%= user.username[0].toUpperCase() %>
+            </a></li>
+          <form action="/user/logout" method="post">
+            <button type="submit" class="py-2 px-5 bg-red-500 rounded-md border-2 border-gray-700">Logout</a>
+          </form>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <div class="container mx-auto p-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-6">
+      <% locals.blogs.reverse().map(blog=> { %>
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-white box-border">
+          <img src="<%= blog.image %>" alt="Blog Image 1" class="rounded-lg mb-4 w-full object-cover">
+          <h2 class="text-xl font-semibold mb-2">
+            <%= blog.title %>
+          </h2>
+          <p class="text-sm text-gray-300 mb-4">
+            <%= blog.description %>
+          </p>
+          <div class="flex justify-between">
+            <a href="/user/blog/<%= blog.id %>" class="text-blue-400 hover:underline font-medium">Read more</a>
+            <p>Author : <%= user.username %>
+            </p>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
