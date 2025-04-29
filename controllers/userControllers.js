@@ -6,21 +6,17 @@ export const Register = async (req, res) => {
 
   const { username, email, password } = req.body;
 
-  try{
-    if(!username || !email || !password){
-      return res.status(404).json({
-        success: false,
-        message: 'all fields are required'
-      });
+  try {
+    if (!username || !email || !password) {
+      const message = 'All fields are required for registration !'
+      return res.render('register', { message });
     }
 
     const user = await User.findOne({ email });
 
-    if(user) {
-      return res.status(404).json({
-        success: false,
-        message: `account already exist`
-      })
+    if (user) {
+      const message = 'Account already exist !'
+      return res.render('register', { message });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -38,7 +34,7 @@ export const Register = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    const newUser = await User.create({ username, email, password: hashPassword, registerOtp: GenOtp});
+    const newUser = await User.create({ username, email, password: hashPassword, registerOtp: GenOtp });
 
     res.cookie('token', encodeURI(newUser._id), {
       httpOnly: true,
@@ -47,10 +43,10 @@ export const Register = async (req, res) => {
       maxAge: 30 * 60 * 1000 // 30min
     })
 
-    return res.status(201).redirect('/user/otp-verification');
+    return res.redirect('/user/otp-verification');
 
   }
-  catch(e) {
+  catch (e) {
     return res.json({
       success: false,
       message: `Internal server error - ${e}`
@@ -68,39 +64,81 @@ export const PostOtpVerification = async (req, res) => {
   const token = req.cookies.token;
   const { otp } = req.body;
 
-  if(!token) {
-    return res.json({
-      success: false,
-      message: `You need to register first`
-    })
+  if (!token) {
+    const message = 'You need to register first to verify your account !'
+    return res.render('otp-verification', { message });
   }
 
-  try{
-    if(!otp) {
-      return res.json({
-        success: false,
-        message: `otp is required for verification`
-      })
+  try {
+    if (!otp) {
+      const message = 'OTP is required for verification !'
+      return res.render('otp-verification', { message });
     }
 
     const user = await User.findOne({ _id: token });
-    console.log(user)
 
-
-    if(user.registerOtp === otp){
+    if (user.registerOtp === otp) {
       user.isVerified = true;
       user.registerOtp = null;
       user.save();
       return res.redirect('/login');
     }
-    else{
-      return res.json({
-        success: false,
-        message: `Authentication failed. Try again.`
-      })
+    else {
+      user.registerOtp = null;
+      user.save();
+      const message = 'OTP verification failed. Try again !'
+      token = null
+      return res.render('otp-verification', { message });
     }
   }
-  catch(e) {
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    })
+  }
+
+}
+
+export const Login = async (req, res) => {
+
+  const { email, password } = req.body;
+
+  try {
+    if (!email || !password) {
+      const message = 'both fields are required to login'
+      return res.render('login', { message })
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      const message = 'User not found, You need to register first'
+      return res.render('login', { message })
+    }
+
+    const checkPassword = await bcrypt.compare(password, user.password);
+
+    if (!checkPassword) {
+      const message = 'Incorrect email or password'
+      return res.render('login', { message })
+    }
+
+    if(user.isVerified === false) {
+      return res.redirect('/register');
+    }
+
+    res.cookie('token', encodeURI(user._id), {
+      secure: true,
+      sameSite: 'strict',
+      httpOnly: true,
+      maxAge: 30 * 60 * 1000 // 30min
+    })
+
+    res.redirect('/user/dashboard');
+
+  }
+  catch (e) {
     return res.json({
       success: false,
       message: `Internal server error - ${e}`

@@ -1,5 +1,5 @@
 import express from 'express'
-import { GetOtpVerification, PostOtpVerification, Register } from '../controllers/userControllers.js';
+import { GetOtpVerification, Login, PostOtpVerification, Register } from '../controllers/userControllers.js';
 
 const userRouter = express.Router();
 
@@ -10,5 +10,7 @@ userRouter.get('/otp-verification', GetOtpVerification)
 userRouter.post('/register', Register);
 
 userRouter.post('/otp-verification', PostOtpVerification);
+
+userRouter.post('/login', Login);
 
 export default userRouter;
