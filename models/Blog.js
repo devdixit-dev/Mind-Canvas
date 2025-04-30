@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const blog_schema = mongoose.Schema({
+const blog_schema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
   image: { type: String, default: 'https://placehold.co/300x200' },
   title: { type: String, required: true },

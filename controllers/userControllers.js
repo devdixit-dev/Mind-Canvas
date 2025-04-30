@@ -4,6 +4,10 @@ import User from '../models/User.js';
 import Comment from '../models/Comment.js'
 import bcrypt from 'bcryptjs';
 
+import mongoose from 'mongoose'
+
+
+
 export const Register = async (req, res) => {
 
   const { username, email, password } = req.body;
@@ -180,7 +184,7 @@ export const PostCreateNewBlog = async (req, res) => {
       author: user._id,
       title,
       description,
-      content
+      content,
     });
 
     blog.save();
