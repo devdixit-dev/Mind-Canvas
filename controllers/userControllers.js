@@ -236,6 +236,7 @@ export const PostVerifyInfo = async (req, res) => {
 export const getBlogPage = async (req, res) => {
   try {
     const blogId = req.params.id;
+    const comments = await Comment.find({blogId: blogId}).populate('createdBy')
 
     if(!blogId) {
       return res.json({
@@ -248,7 +249,7 @@ export const getBlogPage = async (req, res) => {
     const user = await User.findById(blog.author);
     const username = user.username
 
-    res.render('view-blog', {username, blog});
+    res.render('view-blog', {username, blog, comments});
   }
   catch (e) {
     return res.json({
@@ -267,7 +268,7 @@ export const PostAddYourComment = async (req, res) => {
       createdBy: req.user._id
     })
 
-    return res.redirect(`/blog/${req.params.blogId}`)
+    return res.redirect(`/user/blog/${req.params.blogId}`)
 
   }
   catch (e) {

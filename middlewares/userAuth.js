@@ -5,13 +5,13 @@ const UserAuth = async (req, res, next) => {
 
   try {
     if (!token) {
-      res.redirect('/login')
+      return res.redirect('/login')
     }
 
     const user = await User.findById(token);
 
     if (!user) {
-      res.redirect('/login')
+      return res.redirect('/login')
     }
 
     req.user = user
