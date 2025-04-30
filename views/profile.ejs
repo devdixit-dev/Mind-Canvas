@@ -74,15 +74,38 @@
         </div>
 
         <div>
-          <button type="submit" class="mt-4 py-2 px-6 bg-blue-500 rounded-lg">Verify info</button>
+          <button type="submit" class="mt-4 py-2 px-6 bg-blue-500 rounded-lg">Update info</button>
         </div>
       </form>
     </div>
 
     <div class="p-10">
       <h2 class="text-2xl">Your Blogs</h2>
-      <div>
-        you have not create any blogs yet
+      <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-6">
+          <% if (user.blogsPosted.length===0) { %>
+            <div>
+              You have not created any blogs yet.
+            </div>
+            <% } else { %>
+              <% user.blogsPosted.map(blog => { %>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-white box-border">
+                  <img src="https://placehold.co/300x200" alt="Blog Image 1"
+                    class="rounded-lg mb-4 w-full object-cover">
+                  <h2 class="text-xl font-semibold mb-2">
+                    <%= blog.title %>
+                  </h2>
+                  <p class="text-sm text-gray-300 mb-4">
+                    <%= blog.description %>
+                  </p>
+                  <div class="flex justify-between">
+                    <a href="/blog/<%= blog._id %>" class="text-blue-400 hover:underline font-medium">Read more</a>
+                  </div>
+                </div>
+                <% }) %>
+                  <% } %>
+
+        </div>
       </div>
     </div>
   </div>

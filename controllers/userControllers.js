@@ -1,6 +1,7 @@
 import transporter from '../config/nodemailer.js';
 import Blog from '../models/Blog.js';
 import User from '../models/User.js';
+import Comment from '../models/Comment.js'
 import bcrypt from 'bcryptjs';
 
 export const Register = async (req, res) => {
@@ -198,10 +199,9 @@ export const PostCreateNewBlog = async (req, res) => {
 }
 
 export const getProfile = async (req, res) => {
-  const user = req.user
-  res.render('profile', {user});
+  const user = await User.findById(req.user._id).populate('blogsPosted');
+  res.render('profile', { user });
 }
-
 
 export const PostVerifyInfo = async (req, res) => {
   const user = req.user;
@@ -209,7 +209,7 @@ export const PostVerifyInfo = async (req, res) => {
 
   const matchPassword = await bcrypt.compare(oldPassword, user.password);
 
-  if(!matchPassword) {
+  if (!matchPassword) {
     return res.redirect('/user/profile');
   }
 
@@ -226,9 +226,54 @@ export const PostVerifyInfo = async (req, res) => {
   await transporter.sendMail(verifyMail);
 
   user.username = username,
-  user.email = email,
-  user.password = hashPassword,
-  user.save();
+    user.email = email,
+    user.password = hashPassword,
+    user.save();
 
   res.redirect('/user/profile');
+}
+
+export const getBlogPage = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+
+    if(!blogId) {
+      return res.json({
+        success: false,
+        message: 'blog not found. check again...'
+      })
+    }
+
+    const blog = await Blog.findById(blogId).populate('author');
+    const user = await User.findById(blog.author);
+    const username = user.username
+
+    res.render('view-blog', {username, blog});
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    });
+  }
+}
+
+export const PostAddYourComment = async (req, res) => {
+  try{
+
+    const comment = await Comment.create({
+      content: req.body.comment,
+      blogId: req.params.blogId,
+      createdBy: req.user._id
+    })
+
+    return res.redirect(`/blog/${req.params.blogId}`)
+
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    });
+  }
 }

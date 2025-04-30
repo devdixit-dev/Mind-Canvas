@@ -18,7 +18,7 @@ const UserAuth = async (req, res, next) => {
     next();
   }
   catch (e) {
-    return res.status(401).json({
+    return res.json({
       success: false,
       message: `Internal server error ${e}`
     })
