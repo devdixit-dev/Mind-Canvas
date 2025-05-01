@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Mind Canvas</title>
+  <title>Forgot Password - Mind Canvas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -29,31 +29,18 @@
 
   <main class="container mx-auto p-4">
     <section class="mt-8">
-      <h2 class="text-3xl font-light mb-8 text-center">Login</h2>
-      <p class="m-auto text-center text-blue-500 mb-4">
-        <%= locals.message %>
-      </p>
-      <form action="/user/login" method="post" class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 class="text-3xl font-light mb-4 text-center">Enter your registered email</h2>
+      <p class="text-center mb-4">We sent you the verification OTP</p>
+      <p class="m-auto text-center text-blue-500 mb-4"><%= locals.message %></p>
+      <form action="/user/find-email" method="post" class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md mx-auto">
         <div class="mb-4 flex flex-col gap-2">
-          <label for="email" class="block text-sm font-medium">Email</label>
+          <label for="email" class="block text-sm font-medium">Your Email</label>
           <input type="email" id="email" name="email" required
             class="mt-1 block w-full p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="Enter your email">
         </div>
-        <div class="mb-4 flex flex-col gap-2">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" name="password" required
-            class="mt-1 block w-full p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-            placeholder="Enter your password">
-        </div>
-        <button type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-md">Login</button>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-md">Verify</button>
       </form>
-      <p class="mt-4 text-center">forgot password? 
-        <a href="/find-user" class="text-blue-400 hover:underline">reset</a>
-      </p>
-      <p class="mt-4 text-center">Don't have an account ? <a href="/register"
-          class="text-blue-400 hover:underline">register</a></p>
     </section>
   </main>
 

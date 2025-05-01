@@ -41,6 +41,18 @@ app.get('/login', (req, res) => {
   res.render('login')
 });
 
+app.get('/find-user', (req, res) => {
+  res.render('find-user');
+});
+
+app.get('/verify-otp', (req, res) => {
+  res.render('verify-otp');
+})
+
+app.get('/change-password', (req, res) => {
+  res.render('change-password')
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

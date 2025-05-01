@@ -1,5 +1,5 @@
 import express from 'express'
-import { getBlogPage, getCreateNewBlog, getDashboard, GetOtpVerification, getProfile, Login, Logout, PostAddYourComment, PostCreateNewBlog, PostDeleteYourBlog, PostOtpVerification, PostVerifyInfo, Register } from '../controllers/userControllers.js';
+import { getBlogPage, getCreateNewBlog, getDashboard, GetOtpVerification, getProfile, Login, Logout, PostAddYourComment, PostChangeUserPassword, PostCreateNewBlog, PostDeleteYourBlog, PostFindUserByEmail, PostOtpVerification, PostVerifyInfo, PostVerifyOTP, Register } from '../controllers/userControllers.js';
 import UserAuth from '../middlewares/userAuth.js';
 import multer from 'multer';
 import path from 'path';
@@ -45,5 +45,11 @@ userRouter.post('/verify-info', UserAuth, PostVerifyInfo);
 userRouter.post('/comment/:blogId', UserAuth, PostAddYourComment);
 
 userRouter.post('/blog/delete/:blogId', UserAuth, PostDeleteYourBlog);
+
+userRouter.post('/find-email', PostFindUserByEmail);
+
+userRouter.post('/verify-otp', PostVerifyOTP);
+
+userRouter.post('/change-password', PostChangeUserPassword)
 
 export default userRouter;

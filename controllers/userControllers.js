@@ -307,3 +307,112 @@ export const PostDeleteYourBlog = async (req, res) => {
   return res.redirect('/user/profile');
 
 }
+
+export const PostFindUserByEmail = async (req, res) => {
+
+  try{
+
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if(!user) {
+      return res.redirect('/register');
+    }
+
+    // generate Random OTP
+    const GenOtp = Math.floor(Math.random() * 99999 + 1);
+
+    // sending verification email
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: 'Forgot Password - User Verification',
+      text: `Your account has been created with email id: ${email}. Your password reset OTP is ${GenOtp}`
+    }
+
+    await transporter.sendMail(mailOptions);
+
+    user.verifyOtp = GenOtp;
+    user.save();
+
+    res.cookie('token', encodeURI(user._id), {
+      secure: true,
+      sameSite: 'strict',
+      httpOnly: true,
+      maxAge: 10 * 60 * 1000 // 10min
+    });
+    res.render('verify-otp');
+
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    });
+  }
+
+}
+
+export const PostVerifyOTP = async (req, res) => {
+
+  try{
+    const id = req.cookies.token;
+    const { otp } = req.body;
+
+    if(!otp){
+      return res.json({
+        success: false,
+        message: 'otp is required for verification'
+      })
+    }
+
+    const user = await User.findById(id);
+
+    if(!user){
+      return res.redirect('/register');
+    }
+
+    if(!user.verifyOtp === otp){
+      return res.redirect('/user/find-user');
+    }
+
+    user.verifyOtp = null;
+
+    return res.redirect('/change-password');
+    
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    });
+  }
+
+}
+
+export const PostChangeUserPassword = async (req, res) => {
+
+  try{
+
+    const id = req.cookies.token;
+    const { newPassword } = req.body;
+
+    const user = await User.findById(id);
+
+    const decodePassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = decodePassword
+    user.save();
+
+    res.redirect('/login')
+
+  }
+  catch (e) {
+    return res.json({
+      success: false,
+      message: `Internal server error - ${e}`
+    });
+  }
+
+}
