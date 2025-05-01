@@ -282,3 +282,28 @@ export const PostAddYourComment = async (req, res) => {
     });
   }
 }
+
+export const PostDeleteYourBlog = async (req, res) => {
+  const user = req.user;
+  const id = req.params.blogId; // 68137f5c9c6a85eaf28d4df7
+  
+  const blog = await Blog.deleteOne({ _id: id });
+
+  if(!id){
+    return res.redirect('/user/profile');
+  }
+
+  if(!blog){
+    return res.redirect('/user/profile')
+  }
+
+  // delete id from blogPosted array
+  user.blogsPosted = user.blogsPosted.filter(
+    postedId => !postedId.equals(id)
+  );
+  
+  user.save();
+
+  return res.redirect('/user/profile');
+
+}
