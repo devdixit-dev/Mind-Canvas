@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Mind Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Outfit', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white overflow-hidden">
+
+  <header class="bg-gray-800 p-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#">
+        <h1 class="text-3xl font-light cursor-pointer tracking-widest text-white">Mind Canvas</h1>
+      </a>
+      <nav>
+        <ul class="flex space-x-6 font-light text-white">
+          <li><a href="/user/dashboard" class="hover:text-gray-400">Dashboard</a></li>
+          <li><a href="/contact" class="hover:text-gray-400">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="p-10 flex flex-col gap-10 w-full h-full">
+    <h3 class="flex mx-auto text-2xl">About Us</h3>
+    <div class="text-lg text-center flex flex-col gap-6 ">
+      <p class="text-lg">Welcome to Mind Canvas</p>
+      <p>
+        Your personal space on the web to express, explore, and engage with ideas. Built with
+        a vision to empower individuals through writing, Mind Canvas is a modern blog platform designed for seamless
+        expression and meaningful connection. Whether you're sharing personal reflections, technical insights, creative
+        stories, or professional thoughts, our platform provides the tools to bring your words to life.
+      </p>
+
+      <p>We prioritize simplicity, security, and authenticity. With built-in user authentication, your content remains
+        protected while offering a personalized experience. Our clean, user-friendly interface ensures that your focus
+        stays on what truly matters - your voice.</p>
+    </div>
+  </div>
+
+</body>
+
+</html>

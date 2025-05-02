@@ -53,6 +53,14 @@ app.get('/change-password', (req, res) => {
   res.render('change-password')
 });
 
+app.get('/about', (req, res) => {
+  res.render('about');
+});
+
+app.get('/contact', (req, res) => {
+  res.render('contact');
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
