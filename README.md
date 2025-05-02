@@ -8,13 +8,11 @@ Mind Canvas is a modern blogging platform where users can explore, create, and s
 
 - 📝 Create, read, update, and delete blog posts (CRUD)
 - 🔍 View individual blog entries with unique URLs
-- 📅 Blog posts are timestamped and sorted by date
 - 🖼 Clean and responsive user interface
-- 🔒 Optional admin functionality (if applicable)
 
 ## 🛠 Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript (optional: React, if used)
+- **Frontend:** HTML, CSS, JavaScript, EJS(SSR)
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (or your DB of choice)
 - **Hosting:** Render
